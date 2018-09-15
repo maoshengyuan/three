@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../css/base.css">
+    <script src="../../js/common.js"></script>
+    <script src="../../js/vue.js"></script>
+    <script src="../../data/films.js"></script>
+</head>
+
+<body>
+    <div id="app" class="app">
+        <!-- 头部搜索框 start -->
+        <nav class="nav-box">
+            <div class="nav-input">
+                <input id="userInput" type="text" @focus="showBtn=true" @blur="showBtn=false">
+            </div>
+            <div v-if="showBtn" id="seachBtn" class="nav-btn">
+                <span>搜索</span>
+            </div>
+            <!-- <div v-show="showBtn" id="seachBtn" class="nav-btn">
+                <span>搜索</span>
+            </div> -->
+        </nav>
+        <!-- 头部搜索框 end -->
+        <!-- 首页正文 start -->
+        <div class="content-box">
+            <!-- 首页分类列表 start -->
+            <div class="films-box">
+                <div class="list-name">
+                    <span>热门电影</span>
+                </div>
+                <div class="content-list"> 
+                    <!-- 电影展示组件 start -->
+                    <div class="film-item" v-for="(film,index) of films">
+                        <div class="film-img" style="background-image: url()"></div>
+                        <div class="film-title">{{ film.title }}</div>
+                        <div class="film-source">
+                            <span v-for="item in 5" class="star-img open"></span>
+                            <!-- <span class="star-img open"></span> -->
+                            <!-- <span class="star-img open"></span>
+                            <span class="star-img open"></span>
+                            <span class="star-img close"></span>
+                            <span class="star-img close"></span> -->
+                            <span class="star-source">{{ film.rating.value }}</span>
+                        </div>
+                    </div>
+                    <!-- 电影展示组件 end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        new Vue({
+            el: "#app",
+            data: {
+                showBtn: false,
+                films:filmList
+            }
+        })
+    </script>
+</body>
+
+</html>

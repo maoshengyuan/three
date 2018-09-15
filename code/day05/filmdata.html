@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../../css/base.css">
+    <script src="../../js/common.js"></script>
+    <script src="../../js/vue.js"></script>
+    <script src="../../data/filmDetail.js"></script>
+    <script src="../../data/userImg.js"></script>
+    <script src="../../js/filmdata5.js"></script>
+    <title>电影详情</title>
+    <style>
+        [v-cloak]{
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 项目容器 start-->
+    <div class="app" id="app" v-cloak>
+        <!-- 头部搜索框 start -->
+        <nav class="nav-box">
+            <div class="nav-input">
+                <input id="userInput" type="text" @focus="showBtn=true" @blur="showBtn=false">
+            </div>
+            <div v-if="showBtn" class="nav-btn">
+                <span>搜索</span>
+            </div>
+        </nav>
+        <!-- 头部搜索框 end -->
+        <!-- 首页正文 start -->
+        <div class="content-box">
+            <!-- 电影详情 start -->
+            <div class="detail-box">
+                <!-- 电影名称 -->
+                <div class="film-name">{{ film.title }}</div>
+                <!-- 电影信息 stat-->
+                <div class="film-info">
+                    <div class="film-tip">
+                        <div class="comment-count">
+                            <div class="film-source">
+                                <span 
+                                    v-for="item in 5" 
+                                    class="star-img"
+                                    v-bind:class=" film.rating.average >= item*2 ? 'open' : 'close' "
+                                ></span>
+                                <span class="star-source">{{ film.rating.average }}</span>
+                            </div>
+                            <div class="star-count">{{ getCommentsCount }}人评价</div>
+                        </div>
+                        <div class="film-desc">
+                            <p><span>上映时间:</span>{{ film.year }}</p>
+                            <p><span>电影类型:</span>{{ getFilmType }}</p>
+                            <p><span>参演明星:</span>{{ getCasts }}</p>
+                        </div>
+                    </div>
+                    <!-- <div class="film-img" :style=" { 'background-image': film.images.small }"></div> -->
+                    <div class="film-img" :style=" getFilmImg "></div>
+                </div>
+                <!-- 电影信息 end-->
+                <!-- 电影简介 start -->
+                <div class="film-plot">
+                    <div class="plot-title">剧情简介</div>
+                    <div class="plot-content">{{ film.summary }}</div>
+                </div>
+                <!-- 电影简介 end -->
+                <!-- 演员阵容 start -->
+                <div class="film-actor">
+                    <div class="actor-title">导演演员</div>
+                    <div class="actor-list">
+                        <div class="actor-item" v-for="(dir, index) in film.directors ">
+                            <div class="actor-img" :style="`background-image: url(${ dir.avatars.small })`"></div>
+                            <div class="actor-name">{{ dir.name }}(导演)</div>
+                        </div>
+                        <div class="actor-item" v-for="(cas, index) in film.casts">
+                            <div class="actor-img" :style="`background-image: url(${ cas.avatars.small })`"></div>
+                            <div class="actor-name">{{ cas.name }}</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 演员阵容 end -->
+                <!-- 电影评论 start -->
+                <div class="film-comments">
+                    <div class="comment-title">相关评论</div>
+                    <div class="comment-list">
+                        <!-- 用户评论 start -->
+                        <div v-if=" userComments.length == 0 "  style="font-size:0.4rem">暂无评论</div>
+                        <div class="comment-item" v-for="(item, index) in userComments">
+                            <div class="user-img">
+                                <img :src=" '../../imgs/users/' + item.userImg ">
+                            </div>
+                            <div class="user-info">
+                                <div class="user-name">
+                                    <span>{{ item.username }}</span>
+                                    <div class="film-source">
+                                        <span class="star-img open"></span>
+                                        <span class="star-img open"></span>
+                                        <span class="star-img open"></span>
+                                        <span class="star-img close"></span>
+                                        <span class="star-img close"></span>
+                                        <span class="star-source">7.9</span>
+                                    </div>
+                                </div>
+                                <div class="user-time">{{ item.createTime }}</div>
+                            </div>
+                            <div class="user-conent">{{ item.msg }}</div>
+                        </div>
+                        <!-- 用户评论 end -->
+                    </div>
+                </div>
+                <!-- 电影评论 end -->
+            </div>
+            <!-- 电影详情 end -->
+        </div>
+        <!-- 首页正文 end -->
+        <!-- 底部评论区 start -->
+        <footer class="footer-box">
+            <div class="comment-input" @click=" userInputFlag=true ">不想说点什么吗？</div>
+            <div class="comment-detail" v-show="userInputFlag" @click=" userInputFlag=false ">
+                <div class="user-input" @click.stop>
+                    <h4>头像</h4>
+                    <ul class="user-head">
+                        <li 
+                            v-for="(ui, index) in userImgs" 
+                            data-img="user1.png" 
+                            :style="`background-image: url(../../imgs/users/${ ui })`"
+                            :class=" { 'user-choose': index==chooseIndex} " 
+                            @click=" setUserImg(index,ui) "
+                        ></li>
+                    </ul>
+                    <h4>昵称</h4>
+                    <input class="user-nikename" type="text" placeholder="昵称" v-model="userComment.username">
+                    <h4>评分</h4>
+                    <div class="film-source reset-star">
+                        <span class="star-img open"></span>
+                        <span class="star-img open"></span>
+                        <span class="star-img open"></span>
+                        <span class="star-img close"></span>
+                        <span class="star-img close"></span>
+                        <span class="star-source">7.9</span>
+                    </div>
+                    <h4>评论</h4>
+                    <textarea class="user-message" placeholder="留下点足迹..." v-model="userComment.msg"></textarea>
+                    <div class="send-btn">
+                        <span @click="setComment()">发送</span>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- 底部评论区 end -->
+    </div>
+    <!-- 项目容器 end-->
+</body>
+
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../js/vue.js"></script>
+</head>
+<body>
+    <div id="msy1">
+        <h1>{{ msg }}</h1>
+        <input type="text" v-model="msg">
+    </div>
+    <div id="msy2">
+        <h1>{{ msg }}</h1>
+        <input type="text" v-model="msg">
+    </div>
+</body>
+<script>
+    let data = {
+        msg: "hallo"
+    }
+    new Vue({
+        el:"#msy1",
+        data
+    })
+    new Vue({
+        el:"#msy2",
+        data
+    })
+</script>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>myself</title>
+    <link rel="stylesheet" href="../css/base.css">
+    <script src="../js/common.js"></script>
+    <script src="../js/vue.js"></script>
+    <script src="../data/films.js"></script>
+</head>
+<body>
+    <div id="msy" class="app">
+        <top-search></top-search>
+        <list-content></list-content>
+        <!-- <home-content></home-content> -->
+    </div>
+    
+    <template id="topSearch">
+        <!-- 头部搜索框 start -->
+        <nav class="nav-box">
+            <div class="nav-input">
+                <input id="userInput" type="text" @focus="changeBtnStatus(true)" @blur="changeBtnStatus(false)">
+            </div>
+            <div id="seachBtn" class="nav-btn" v-show="showBtn">
+                <span>搜索</span>
+            </div>
+        </nav>
+        <!-- 头部搜索框 end -->        
+    </template>
+
+    <template id="listContent">
+        <!-- 首页正文 start -->
+        <div class="content-box">
+            <!-- 首页分类列表 start -->
+            <div class="films-box">
+                <div class="list-name">
+                    <span>热门电影</span>
+                </div>
+                <div class="content-list">
+                    <film-item v-for="(item, index) in 15"></film-item>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="filmitem">
+        <!-- 电影展示组件 start -->
+        <div class="film-item">
+            <div class="film-img" style="background-image: url(../imgs/film.jpg)"></div>
+            <div class="film-title">蚁人2：黄蜂女现身</div>
+            <div class="film-source">
+                <span class="star-img open"></span>
+                <span class="star-img open"></span>
+                <span class="star-img open"></span>
+                <span class="star-img close"></span>
+                <span class="star-img close"></span>
+                <span class="star-source">7.9</span>
+            </div>
+        </div>
+        <!-- 电影展示组件 end -->
+    </template>
+
+    <template id="homecontent">
+        <div class="content-box">
+            <div class="home-box">
+                <!-- 首页分类列表 start -->
+                <div v-for="(item, index) in 3" style=" background-color: white;">
+                    <div class="list-name">
+                        <span>热门电影</span>
+                        <span class="list-more">更多 > </span>
+                    </div>
+                    <div class="list-content">
+                        <film-item v-for="(item, index) in 6"></film-item>
+                    </div>
+                </div>
+                <!-- 首页分类列表 end -->
+            </div>
+        </div>
+    </template>
+</body>
+<script>
+    Vue.component("TopSearch",{
+        template:"#topSearch"
+
+    });
+    Vue.component("ListContent",{
+        template:"#listContent"
+    });    
+    Vue.component("FilmItem",{
+        template:"#filmitem"
+    });
+    Vue.component("HomeContent",{
+        template:"#homecontent"
+    })
+    new Vue({
+        el:"#msy",
+        components: {
+            TopSearch:{
+                template:"#topSearch",
+                data(){
+                    return{
+                        showBtn:false
+                    }
+                },
+                methods:{
+                    changeBtnStatus(flag){
+                        this.showBtn = flag
+                    }
+                }
+            }
+        }
+    })
+</script>
+</html>

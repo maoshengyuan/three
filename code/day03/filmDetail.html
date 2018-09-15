@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../../css/base.css">
+    <script src="../../data/filmDetail.js"></script>
+    <script src="../../data/userImg.js"></script>
+    <script src="../../js/common.js"></script>
+    <script src="../../js/vue.js"></script>
+    <title>电影详情</title>
+</head>
+<body>
+    <!-- 项目容器 start-->
+    <div id="app" class="app">
+        <!-- 头部搜索框 start -->
+        <nav class="nav-box">
+            <div class="nav-input">
+                <input id="userInput" type="text">
+            </div>
+            <div id="seachBtn" class="nav-btn">
+                <span>搜索</span>
+            </div>
+        </nav>
+        <!-- 头部搜索框 end -->
+        <!-- 首页正文 start -->
+        <div class="content-box">
+            <!-- 电影详情 start -->
+            <div class="detail-box">
+                <!-- 电影名称 -->
+                <div class="film-name">{{ films.title }}</div>
+                <!-- 电影信息 stat-->
+                <div class="film-info">
+                    <div class="film-tip">
+                        <div class="comment-count">
+                            <div class="film-source">
+                                <!-- <span class="star-img open"></span>
+                                <span class="star-img open"></span>
+                                <span class="star-img open"></span>
+                                <span class="star-img close"></span>
+                                <span class="star-img close"></span> -->
+                                <span v-for="item in 5" class="star-img" v-bind:class=" films.rating.average >= item*2 ? 'open' : 'close' "></span>
+                                <span class="star-source">{{ films.rating.average }}</span>
+                            </div>
+                            <div class="star-count">{{ films.wish_count }}人评价</div>
+                        </div>
+                        <div class="film-desc">
+                            <p>
+                                <span>上映时间:</span>{{ films.year }}</p>
+                            <p>
+                                <span>电影类型:</span>动作 / 科幻 / 冒险</p>
+                            <p>
+                                <span>参演明星:</span>佩顿·里德(导演) / 保罗·路德 / 伊万杰琳·莉莉 / 迈克尔·佩纳 </p>
+                        </div>
+                    </div>
+                    <div class="film-img" :style="'background-image: url('+ films.images.small +')'"></div>
+                </div>
+                <!-- 电影信息 end-->
+                <!-- 电影简介 start -->
+                <div class="film-plot">
+                    <div class="plot-title">剧情简介</div>
+                    <div class="plot-content">{{ films.summary }}</div>
+                </div>
+                <!-- 电影简介 end -->
+                <!-- 演员阵容 start -->
+                <div class="film-actor">
+                    <div class="actor-title">导演演员</div>
+                    <div class="actor-list">
+                        <div class="actor-item">
+                            <div class="actor-img" style="background-image: url(./imgs/actor.jpg)"></div>
+                            <div class="actor-name">保罗·路德asdadasdasds</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 演员阵容 end -->
+                <!-- 电影评论 start -->
+                <div class="film-comments">
+                    <div class="comment-title">相关评论</div>
+                    <div class="comment-list">
+                        <!-- 用户评论 start -->
+                        <div class="comment-item">
+                            <div class="user-img">
+                                <img src="./imgs/users/user1.png">
+                            </div>
+                            <div class="user-info">
+                                <div class="user-name">
+                                    <span>用户名称</span>
+                                    <div class="film-source">
+                                        <span class="star-img open"></span>
+                                        <span class="star-img open"></span>
+                                        <span class="star-img open"></span>
+                                        <span class="star-img close"></span>
+                                        <span class="star-img close"></span>
+                                        <span class="star-source">7.9</span>
+                                    </div>
+                                </div>
+                                <div class="user-time">2018年08月30日11:52:24</div>
+                            </div>
+                            <div class="user-conent">
+                                1.把路易斯、蚁人、钢铁侠、星爵、死侍、蜘蛛侠废除超能力后关在一个房间里，请问谁能活到最后？ 2.最高司令竟然辞职去美国当了FBI探员，叛徒！ 3.斯坦·李今年太惨了，赌博赌到一半赌场被炸了，汽车突然变成了玩具车，开校车遇到UFO，最后还被灭霸一个响指打没了。
+                                4.李易峰为什么不偷一件蚁人战衣再下船。 【有2个彩蛋，第2个彩蛋和《蜘蛛侠：英雄归来》的第2个彩蛋一样坑爹。】
+                            </div>
+                        </div>
+                        <!-- 用户评论 end -->
+                    </div>
+                </div>
+                <!-- 电影评论 end -->
+            </div>
+            <!-- 电影详情 end -->
+        </div>
+        <!-- 首页正文 end -->
+        <!-- 底部评论区 start -->
+        <footer class="footer-box">
+            <div class="comment-input" onclick="showUserInput()">不想说点什么吗？</div>
+            <div class="comment-detail" id="userCommentMb" onclick="hideUserInput()">
+                <div class="user-input" onclick="stopEvent(event)">
+                    <h4>头像</h4>
+                    <ul class="user-head" onclick="userChoose(this,event)">
+                        <li class="user-choose" data-img="user1.png" style="background-image: url(./imgs/users/user1.png)"></li>
+                        <li data-img="user2.png" style="background-image: url(./imgs/users/user2.png)"></li>
+                        <li data-img="user3.png" style="background-image: url(./imgs/users/user3.png)"></li>
+                        <li data-img="user4.png" style="background-image: url(./imgs/users/user4.png)"></li>
+                        <li data-img="user5.png" style="background-image: url(./imgs/users/user5.png)"></li>
+                        <li data-img="user6.png" style="background-image: url(./imgs/users/user6.png)"></li>
+                        <li data-img="user7.png" style="background-image: url(./imgs/users/user7.png)"></li>
+                        <li data-img="user8.png" style="background-image: url(./imgs/users/user8.png)"></li>
+                        <li data-img="user9.png" style="background-image: url(./imgs/users/user9.png)"></li>
+                        <li data-img="user10.png" style="background-image: url(./imgs/users/user10.png)"></li>
+                        <li data-img="user11.png" style="background-image: url(./imgs/users/user11.png)"></li>
+                        <li data-img="user12.png" style="background-image: url(./imgs/users/user12.png)"></li>
+                        <li data-img="user13.png" style="background-image: url(./imgs/users/user13.png)"></li>
+                        <li data-img="user14.png" style="background-image: url(./imgs/users/user14.png)"></li>
+                        <li data-img="user15.png" style="background-image: url(./imgs/users/user15.png)"></li>
+                        <li data-img="user16.png" style="background-image: url(./imgs/users/user16.png)"></li>
+                        <li data-img="user17.png" style="background-image: url(./imgs/users/user17.png)"></li>
+                        <li data-img="user18.png" style="background-image: url(./imgs/users/user18.png)"></li>
+                        <li data-img="user19.png" style="background-image: url(./imgs/users/user19.png)"></li>
+                        <li data-img="user20.png" style="background-image: url(./imgs/users/user20.png)"></li>
+                        <li data-img="user21.png" style="background-image: url(./imgs/users/user21.png)"></li>
+                        <li data-img="user22.png" style="background-image: url(./imgs/users/user22.png)"></li>
+                        <li data-img="user23.png" style="background-image: url(./imgs/users/user23.png)"></li>
+                        <li data-img="user24.png" style="background-image: url(./imgs/users/user24.png)"></li>
+                    </ul>
+                    <h4>昵称</h4>
+                    <input class="user-nikename" type="text" placeholder="昵称">
+                    <h4>评分</h4>
+                    <div class="film-source reset-star">
+                        <span class="star-img open"></span>
+                        <span class="star-img open"></span>
+                        <span class="star-img open"></span>
+                        <span class="star-img close"></span>
+                        <span class="star-img close"></span>
+                        <span class="star-source">7.9</span>
+                    </div>
+                    <h4>评论</h4>
+                    <textarea class="user-message" placeholder="留下点足迹..."></textarea>
+                    <div class="send-btn">
+                        <span>发送</span>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- 底部评论区 end -->
+    </div>
+    <!-- 项目容器 end-->
+</body>
+<script>
+     new Vue({
+            el:"#app",
+            data:{
+                films : filmDetail
+            }
+        })
+</script>
+</html>

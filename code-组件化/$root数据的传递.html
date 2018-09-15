@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../js/vue.js"></script>
+</head>
+<body>
+    <!-- 这个就是页面的布局样式，但是页面并不会显示component标签样式，会显示的是div样式 -->
+    <div id="msy">
+        <h1>root数据</h1>
+        <hr>
+        <component-a></component-a>
+        <hr>
+        <component-b></component-b>
+    </div>
+
+    <template id="a">
+        <div>
+            <h1>组件A</h1>
+        </div>  
+    </template>
+    <template id="b">
+        <div>
+            <h1>组件B</h1>
+        </div>
+    </template>
+
+    <script>
+        let componentA = Vue.extend({
+            template: "#a",
+            data(){
+                return {
+                    info: "我是A啊！"
+                }
+            },
+            mounted() {
+                this.$root.$emit("loadMsg", this.info)
+            }
+        })        
+        
+        let componentB = Vue.extend({
+            template: "#b",
+            data(){
+                return {
+                    msg: ""
+                }
+            },
+            beforeMount(){
+                this.$root.$on("loadMsg",(a) => {
+                    this.msg = a;
+                })        
+            }
+        })
+        
+        
+        new Vue({
+            el:"#msy",
+            data:{
+                msg : "毛声远"
+            },
+            components: {
+                componentA,
+                componentB
+            }
+        })
+    </script>
+</body>
+</html>
